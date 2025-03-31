@@ -1,0 +1,89 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="products.css">
+    <script src="products.js"></script>
+ </head>
+ <body>
+    
+ </body>
+ </html><!-- Sidebar -->
+ <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>Dashboard</h2>
+    </div>
+    <ul class="sidebar-menu">
+        <li>Overview</li>
+        <li class="active">Products</li>
+        <li>Inventory</li>
+       <a href="orders.html"><li>Orders</li></a>
+        
+        <li>Reports</li>
+        <li>Settings</li>
+        <li>About</li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="page-header">
+        <h1>Products</h1>
+        <div class="header-right">
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" placeholder="Search products...">
+            </div>
+            
+            <!-- Category Dropdown in Header -->
+            <div class="header-category-dropdown">
+                <button class="header-dropdown-btn">
+                    Categories
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="header-dropdown-content">
+                    <ul class="header-category-list">
+                        <li>All Products</li>
+                        <li>Detergent</li>
+                        <li>Biscuits</li>
+                        <li>Groceries</li>
+                        <li>Snacks</li>
+                        <li>Personal Care</li>
+                        <li>Beverages</li>
+                        <li>Chocolates</li>
+                        <li>Cleaning</li>
+                        <li>Spices</li>
+                        <li>Noodles</li>
+                        <li>Dairy</li>
+                        <li>Bakery</li>
+                        <li>Ready to Eat</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <div ><img src="M-removebg-preview.png" alt="" class="profile-pic"></div>
+                <div class="profile-name">MKP</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="productsContainer">
+        <!-- Products will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button id="prevPage">Previous</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button id="nextPage">Next</button>
+    </div>
+
+    
+</div>
