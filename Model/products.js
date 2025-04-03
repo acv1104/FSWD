@@ -44,9 +44,10 @@ const products = [
 
 document.addEventListener('DOMContentLoaded', function() {
     const productsContainer = document.getElementById('productsContainer');
+    let currentProducts = [...products];
     
     // Generate product cards
-    renderProducts(products);
+    renderProducts(currentProducts);
 
     // Sidebar menu interaction
     const menuItems = document.querySelectorAll('.sidebar-menu li');
@@ -85,12 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const category = this.textContent.trim();
             
             if (category === 'All Products') {
-                renderProducts(products);
+                currentProducts = [...products];
+                renderProducts(currentProducts);
             } else {
-                const filteredProducts = products.filter(
+                currentProducts = products.filter(
                     product => product.category === category
                 );
-                renderProducts(filteredProducts);
+                renderProducts(currentProducts);
             }
             
             // Update dropdown button text
@@ -104,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
             alert('Logging out...');
-            // In a real app: window.location.href = '/logout';
         });
     }
 
@@ -113,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const searchTerm = this.value.toLowerCase();
-            const filteredProducts = products.filter(product => 
+            currentProducts = products.filter(product => 
                 product.name.toLowerCase().includes(searchTerm) || 
                 product.category.toLowerCase().includes(searchTerm)
             );
-            renderProducts(filteredProducts);
+            renderProducts(currentProducts);
         }
     });
 
@@ -154,11 +155,72 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${product.stock > 15 ? 'In Stock' : 'Low Stock'}: ${product.stock}
                 </div>
                 <div class="product-actions">
-                    <button class="btn btn-edit">Edit</button>
-                    <button class="btn btn-delete">Delete</button>
+                    <button class="btn btn-edit" data-id="${product.id}">Edit</button>
+                    <button class="btn btn-delete" data-id="${product.id}">Delete</button>
                 </div>
             `;
             productsContainer.appendChild(productCard);
+        });
+
+        // Add event listeners for delete buttons
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+                e.stopPropagation();
+                const productId = parseInt(this.getAttribute('data-id'));
+                
+                if (confirm('Are you sure you want to delete this product?')) {
+                    // Remove from current products array
+                    currentProducts = currentProducts.filter(p => p.id !== productId);
+                    // Remove from main products array as well
+                    const index = products.findIndex(p => p.id === productId);
+                    if (index > -1) {
+                        products.splice(index, 1);
+                    }
+                    // Re-render products without page refresh
+                    renderProducts(currentProducts);
+                }
+            });
+        });
+
+        // Add event listeners for edit buttons
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent any default behavior
+                e.stopPropagation();
+                const productId = parseInt(this.getAttribute('data-id'));
+                const product = currentProducts.find(p => p.id === productId);
+                
+                // Simple edit functionality - in a real app you'd have a proper form/modal
+                const newName = prompt('Enter new product name:', product.name);
+                if (newName !== null) {
+                    product.name = newName;
+                }
+                
+                const newPrice = prompt('Enter new price:', product.price);
+                if (newPrice !== null) {
+                    product.price = newPrice;
+                }
+                
+                const newStock = prompt('Enter new stock quantity:', product.stock);
+                if (newStock !== null) {
+                    product.stock = parseInt(newStock) || 0;
+                }
+                
+                const newCategory = prompt('Enter new category:', product.category);
+                if (newCategory !== null) {
+                    product.category = newCategory;
+                }
+                
+                // Update the product in both arrays
+                const mainIndex = products.findIndex(p => p.id === productId);
+                if (mainIndex > -1) {
+                    products[mainIndex] = { ...product };
+                }
+                
+                // Re-render products without page refresh
+                renderProducts(currentProducts);
+            });
         });
     }
 });

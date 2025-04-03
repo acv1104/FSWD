@@ -241,4 +241,5 @@ display: flex;
 .underline
 {
     text-decoration: none;
+    color: white;
 }
